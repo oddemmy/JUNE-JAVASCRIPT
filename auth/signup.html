@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+
+        <div>
+            <label for="username"> username </label>
+            <input type="text" id="username">
+        </div>
+
+        <div>
+            <label for="email"> email </label>
+            <input type="text" id="email">
+        </div>
+
+        <div>
+            <label for="password"> password </label>
+            <input type="text" id="password">
+        </div>
+
+        <div>
+            <label for="confirmpassword"> confirm password </label>
+            <input type="text" id="confirmpassword">
+        </div>
+
+        <button onclick="signUp()">
+            sign up
+        </button>
+
+
+
+    </div>
+
+
+</body>
+
+</html>
+<script>
+    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
+
+
+
+    function signUp() {
+
+        if (!username.value.trim() || !email.value.trim() || !password.value.trim() || !confirmpassword.value.trim()) {
+            alert('all fields are mandatory')
+            return
+        }
+
+        if (database.find((userObj) => { return userObj.email === email.value.trim() })) {
+            alert('user already exists')
+            return
+        }
+
+        if (password.value.trim() !== confirmpassword.value.trim()) {
+            alert('passwords do not match')
+            return
+        }
+
+
+        let userObj = {
+            username: username.value.trim(),
+            email: email.value.trim(),
+            password: password.value.trim()
+        }
+
+        database.push(userObj)
+        localStorage.setItem('signedUpUsers', JSON.stringify(database))
+        console.log(database);
+        window.location.href = 'login.html'
+
+    }
+
+    // let newArr = [1, 2, 3, 4, 5]
+    // // find
+
+    // let foundNumber = newArr.find((num, i) => {
+    //     console.log(num, i);
+    //     return num === 5
+    // })
+
+</script>

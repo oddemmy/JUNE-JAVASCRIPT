@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div>
+        <label for="email"> email </label>
+        <input type="text" id="email">
+    </div>
+
+    <div>
+        <label for="password"> password </label>
+        <input type="text" id="password">
+    </div>
+
+
+    <button onclick="login()">
+        log in
+    </button>
+</body>
+
+</html>
+<script>
+    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
+
+    function login() {
+
+        if (!email.value.trim() || !password.value.trim()) {
+            alert('all fields are mandatory')
+            return
+        }
+
+        let foundUser = database.find((userObj) => { return userObj.email === email.value.trim() })
+
+        // if (foundUser) {
+        //     if (foundUser.password === password.value.trim()) {
+        //         alert('login successful')
+        //         window.location.href = 'dashboard.html'
+        //     }else{
+        //         alert('incorrect email or password')
+        //     }
+
+
+        // } else {
+        //     alert('user doesnt exist')
+        // }
+
+
+
+        if (!foundUser) {
+            alert('user doesnt exist , try signing up')
+            location.href = 'signup.html'
+            return
+        }
+
+        if (foundUser.password !== password.value.trim()) {
+            alert('incorrect email or password')
+            return
+        }
+
+        alert('login successful')
+
+        let currentUserIndex = database.findIndex((obj) => obj.email == foundUser.email)
+        localStorage.setItem('currentUserIndexJune', currentUserIndex)
+        console.log(currentUserIndex);
+        window.location.href = 'dashboard.html'
+    }
+
+
+    // let arrOfFoods = ['rice', 'boli', 'fufu']
+
+    // let foundFoodIndex = arrOfFoods.findIndex((food) => {
+    //     return food.length === 5
+    // })
+
+
+
+
+</script>

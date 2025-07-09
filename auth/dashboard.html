@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1> hello <span id="user"> loading... </span></h1> <button onclick="logOut()">log out</button>
+</body>
+
+</html>
+<script>
+    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
+    let currentUserIndex = localStorage.getItem('currentUserIndexJune')
+    let currentUser = database[currentUserIndex]
+
+
+    // let arr = [
+    //     {
+    //         username: 'wisdom',
+    //         email: 'anya@gmail.com',
+    //         password: 'ghsjkl;k'
+    //     },
+    //     {
+    //         username: 'ini',
+    //         email: 'inioluwa@gmail.com',
+    //         password: 'sghjsn'
+    //     }
+    //     , {
+    //         username: 'ebuka',
+    //         email: 'ebuka@gmail.com',
+    //         password: 'opdkjk'
+    //     }
+
+    // ]
+    // arr[1]
+
+    function checkUser() {
+        if (!currentUser) {
+            alert('unauthorized')
+            location.href = 'login.html'
+        } else {
+            user.innerHTML = currentUser.username
+        }
+    }
+
+    checkUser()
+
+
+    function logOut() {
+        let confirmUserExit = confirm('are you sure?')
+        if (confirmUserExit) {
+            alert('logout successful')
+            localStorage.removeItem('currentUserIndexJune')
+            window.location.href = 'login.html'
+        }
+
+    }
+
+
+    // foreach , find , map , filter , findIndex , some
+
+    let arr = [1, 2, 3, 4, 5]
+
+    // [2,3,4,5,6]
+    let newArr = arr.map((num) => {
+        return 1 + num
+    })
+
+    console.log(newArr);
+
+    let filteredEvenArr = arr.filter((num) => num % 2 == 0)
+    console.log(filteredEvenArr);
+
+    let myArr = ['2', '3', '4', '5', '6']
+    let isEveryBodyAString = myArr.every((num) => {
+        console.log(num);
+        return typeof (num) == "string"
+    })
+
+    console.log(isEveryBodyAString);
+
+
+
+</script>
