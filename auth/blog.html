@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG</title>
+    <style>
+        *{
+            background-color: beige;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            
+        }
+        .content-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #postPicture{
+            background-color: black;
+            color: whitesmoke;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 7%;
+            height: 5vh;
+            /* display: flex; */
+            /* margin-left: 45%; */
+        }
+        .log{
+             background-color: black;
+            color: whitesmoke;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 7%;
+            height: 5vh;
+        }
+         .post {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: black;
+            color: whitesmoke;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .post img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .post button {
+            background-color: black;
+            color: whitesmoke;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 50%;
+            height: 4vh;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <h1>Hello <span id="user">loading...</span></h1>
+        <button onclick="logOut()" class="log">Log Out</button>
+        <hr>
+        <input type="file" id="fileInput" accept="image/*" />
+        <div class="preview-container">
+        <img id="preview" width="200" />
+    </div>
+    <button id="postPicture">POST</button>
+   <div id="posts-container"></div>
+    </div>
+   
+    
+</body>
+</html>
+<script>
+    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
+    let currentUserIndex = localStorage.getItem('currentUserIndexJune')
+    let currentUser = database[currentUserIndex]
+
+    let input = document.getElementById('fileInput');
+    let preview = document.getElementById('preview');
+    let postBtn = document.getElementById('postPicture')
+    let postContainer = document.getElementById('posts-container')
+    let currentFile = '';
+
+    function checkUser() {
+        if (!currentUser) {
+            alert('unauthorized')
+            location.href = 'login.html'
+        } else {
+            user.innerHTML = currentUser.username
+        }
+    }
+
+    checkUser()
+
+   
+
+
+    function logOut() {
+        let confirmUserExit = confirm('are you sure?')
+        if (confirmUserExit) {
+            alert('logout successful')
+            localStorage.removeItem('currentUserIndexJune')
+            window.location.href = 'login.html'
+        }
+
+    }
+
+    
+    
+    input.addEventListener('change', function(ev){
+        currentFile = ev.target.files[0];
+        if (currentFile) {
+            preview.src = URL.createObjectURL(currentFile);
+        }
+    });
+
+    postBtn.addEventListener('click', function () {
+        if (!currentFile) {
+            alert('Please, select a file to post');
+            return;
+        }
+        
+        postContainer.innerHTML += `
+            <div class="post">
+            <img src="${URL.createObjectURL(currentFile)}" width="100" />
+            <button class="opinion">Like</button>
+            <button class="delete">Delete</button>
+            </div>
+        `;
+
+        preview.src = '';
+        input.value = '';
+        currentFile = '';
+
+        let opinions = document.querySelectorAll('.opinion');
+        let deletes = document.querySelectorAll('.delete');
+
+
+    opinions.forEach(btn => {
+        btn.addEventListener('click', function () {
+        // btn.innerHTML = btn.innerHTML === 'Like' ? 'Unliked' : 'Like';
+        if(btn.innerHTML === 'Like'){
+            btn.innerHTML = 'Unliked'
+        }else {
+            btn.innerHTML = 'Like'
+        }
+        });
+    });
+
+    deletes.forEach(btn => {
+        btn.addEventListener('click', function () {
+        btn.parentElement.remove();
+        });
+    });
+        });
+
+   
+
+
+</script> 
