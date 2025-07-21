@@ -4,82 +4,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f1eb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 80px auto;
+            background-color: #fffaf3;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(139, 69, 19, 0.2);
+            border: 1px solid #deb887;
+        }
+
+        h2 {
+            text-align: center;
+            color: #5c4033;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #5c4033;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #b8860b;
+            border-radius: 6px;
+            background-color: #fffaf0;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #8b4513;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a0522d;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div>
-        <label for="email"> email </label>
-        <input type="text" id="email">
+    <div class="container">
+        <h2>Login</h2>
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email">
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="text" id="password">
+        </div>
+
+        <button onclick="login()">Log in</button>
     </div>
 
-    <div>
-        <label for="password"> password </label>
-        <input type="text" id="password">
-    </div>
+    <script>
+        let database = JSON.parse(localStorage.getItem('signedUpUsers')) || [];
+        let emailInput = document.getElementById('email');
+        let passwordInput = document.getElementById('password');
 
+        function login() {
+            if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+                alert('All fields are mandatory');
+                return;
+            }
 
-    <button onclick="login()">
-        log in
-    </button>
+            let specificUser = database.find((userObj) => userObj.email == emailInput.value.trim());
+
+            if (!specificUser) {
+                alert('User doesn’t exist, try signing up');
+                return;
+            }
+
+            if (passwordInput.value.trim() !== specificUser.password) {
+                alert('Invalid password');
+                return;
+            }
+
+            alert('Login Successful!');
+            let currentUserIndex = database.findIndex((userObj)=> userObj.email == specificUser.email)
+            localStorage.setItem('currentUserIndexJune', currentUserIndex)
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+
 </body>
 
 </html>
-<script>
-    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
-
-    function login() {
-
-        if (!email.value.trim() || !password.value.trim()) {
-            alert('all fields are mandatory')
-            return
-        }
-
-        let foundUser = database.find((userObj) => { return userObj.email === email.value.trim() })
-
-        // if (foundUser) {
-        //     if (foundUser.password === password.value.trim()) {
-        //         alert('login successful')
-        //         window.location.href = 'dashboard.html'
-        //     }else{
-        //         alert('incorrect email or password')
-        //     }
-
-
-        // } else {
-        //     alert('user doesnt exist')
-        // }
-
-
-
-        if (!foundUser) {
-            alert('user doesnt exist , try signing up')
-            location.href = 'signup.html'
-            return
-        }
-
-        if (foundUser.password !== password.value.trim()) {
-            alert('incorrect email or password')
-            return
-        }
-
-        alert('login successful')
-
-        let currentUserIndex = database.findIndex((obj) => obj.email == foundUser.email)
-        localStorage.setItem('currentUserIndexJune', currentUserIndex)
-        console.log(currentUserIndex);
-        window.location.href = 'dashboard.html'
-    }
-
-
-    // let arrOfFoods = ['rice', 'boli', 'fufu']
-
-    // let foundFoodIndex = arrOfFoods.findIndex((food) => {
-    //     return food.length === 5
-    // })
-
-
-
-
-</script>

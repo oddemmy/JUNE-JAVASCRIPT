@@ -5,83 +5,425 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../auth/css/index.css">
+    <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f0eb; /* light brown */
+        color: #3e2723; /* dark brown for text */
+    }
+
+    .nav {
+        background-color: #795548; /* medium brown */
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        font-size: 18px;
+    }
+
+    .nav button {
+        background-color: #a1887f;
+        border: none;
+        padding: 6px 12px;
+        margin-left: 10px;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .nav button:hover {
+        background-color: #8d6e63;
+    }
+
+    .form-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+    }
+
+    .form-image {
+        flex: 1;
+        background-color: #d7ccc8;
+        min-height: 300px;
+        border-radius: 10px;
+        margin-right: 20px;
+    }
+
+    .form-textarea {
+        flex: 2;
+        background-color: #efebe9;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-textarea h1 {
+        color: #5d4037;
+        margin-bottom: 10px;
+    }
+
+    .line {
+        height: 3px;
+        background-color: #8d6e63;
+        width: 80px;
+        margin-bottom: 20px;
+    }
+
+    .textbox {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #bcaaa4;
+        font-size: 16px;
+    }
+
+    .smallBox {
+        height: 40px;
+    }
+
+    .bigBox {
+        height: 100px;
+    }
+
+    .submit-btn {
+        background-color: #6d4c41;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        background-color: #5d4037;
+    }
+
+    #preview {
+        padding: 20px;
+    }
+
+    .single-post {
+        background-color: #fff8f0;
+        border: 1px solid #d7ccc8;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+    .single-post img {
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+    .single-post button {
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 5px 10px;
+        background-color: #8d6e63;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .single-post button:hover {
+        background-color: #6d4c41;
+    }
+
+    .edit-container {
+        margin-top: 10px;
+    }
+
+    .edit-container input {
+        display: block;
+        width: 90%;
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #a1887f;
+        border-radius: 5px;
+    }
+
+    #profile-div {
+        padding: 20px;
+        background-color: #fbe9e7;
+        border: 1px solid #d7ccc8;
+        border-radius: 10px;
+        margin: 20px;
+    }
+
+    #profile-pic {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #8d6e63;
+        margin-bottom: 10px;
+    }
+
+    #choosePic {
+        margin-top: 10px;
+    }
+</style>
+
 </head>
 
 <body>
-    <h1> hello <span id="user"> loading... </span></h1> <button onclick="logOut()">log out</button>
+    <div class="nav">
+        <p> Blog app</p>
+        <h1 id="header"> Hello <span id="user"> loading... </span></h1> <span><button
+            onclick="profile()" id="profile">profile</button> <button onclick="logOut(event)">log out</button></span>
+    </div>
+
+
+    <div id="profile-div" style="display: none;">
+        <img id="profile-pic" alt="profile picture">
+        <button onclick="editPicture()">Edit Profile Picture</button>
+        <input type="file" accept="image/*" id="choose-pic" onchange="choosePic(event)" style="display: none;">
+    </div>
+
+
+
+
+    <div class="form-body">
+        <div class="form-image"></div>
+        <div class="form-textarea">
+            <h1> Post blog </h1>
+            <div class="line"></div>
+            <form>
+                <textarea class="textbox smallBox" id="forTitle" name="title" placeholder="Write your title here" maxlength="30"
+                    required accept-charset="utf-8"> </textarea>
+
+                <textarea class="textbox bigBox" id="forDescription" name="messageText"
+                    placeholder="Write your message here" maxlength="600" required accept-charset="utf-8"></textarea>
+
+                <div>
+                    <input type="file" style="display: inline; width: 40%;" onchange="pickPicture(event)"> <img
+                        width="40px" id="ourpreviewimage" height="40px" alt="preview image">
+                </div>
+
+                <br>
+                <br>
+
+
+                <button class="submit-btn" type="button" onclick="postBlog(event)">SEND</button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <div id="preview">
+
+
+
+    </div>
+
+
+
 </body>
 
 </html>
 <script>
+
     let database = JSON.parse(localStorage.getItem('signedUpUsers')) || []
-    let currentUserIndex = localStorage.getItem('currentUserIndexJune')
-    let currentUser = database[currentUserIndex]
-
-
-    // let arr = [
-    //     {
-    //         username: 'wisdom',
-    //         email: 'anya@gmail.com',
-    //         password: 'ghsjkl;k'
-    //     },
-    //     {
-    //         username: 'ini',
-    //         email: 'inioluwa@gmail.com',
-    //         password: 'sghjsn'
-    //     }
-    //     , {
-    //         username: 'ebuka',
-    //         email: 'ebuka@gmail.com',
-    //         password: 'opdkjk'
-    //     }
-
-    // ]
-    // arr[1]
+    let currentUser = database[JSON.parse(localStorage.getItem('currentUserIndexJune'))]
+    let user = document.getElementById('user')
+    let profilePic = document.getElementById('profile-pic')
+    if (!currentUser.blogPosts) {
+    currentUser.blogPosts = []
+    }
+    let currentUsersblogsArr = currentUser.blogPosts
+    
+    
 
     function checkUser() {
-        if (!currentUser) {
-            alert('unauthorized')
-            location.href = 'login.html'
-        } else {
-            user.innerHTML = currentUser.username
-        }
-    }
-
-    checkUser()
-
-
-    function logOut() {
-        let confirmUserExit = confirm('are you sure?')
-        if (confirmUserExit) {
-            alert('logout successful')
-            localStorage.removeItem('currentUserIndexJune')
+        if(!currentUser){
+            alert('User Login not detected, try logging in!')
             window.location.href = 'login.html'
         }
+    }
+    checkUser()
 
+    user.innerHTML = currentUser.username
+    
+    
+    function logOut(ev) {
+        ev.target.innerHTML = 'Logging out...'
+        ev.target.disabled = true
+
+        setTimeout(() => {
+            let confirmLogOut = confirm('Are you sure you want to log out?')
+            if (confirmLogOut) {
+                localStorage.removeItem('currentUserIndexJune')
+                window.location.href = 'login.html'
+            }
+                ev.target.innerHTML = 'log out'
+                ev.target.disabled = false
+            
+        }, 1000)
     }
 
+    function profile() {
+        profilePic.src = currentUser.profilePicture
+        let profileDiv = document.getElementById('profile-div')
+        if(profileDiv.style.display === 'none'){
+            document.getElementById('profile').innerHTML = '❌'
+            profileDiv.style.display = 'block'
+        }else{
+            document.getElementById('profile').innerHTML = 'profile'
+            profileDiv.style.display = 'none'
+        }
+        
+    }
+    function editPicture() {
+        // currentUser.profilePicture = ''
+        let choosePic = document.getElementById('choose-pic')
+        if (choosePic.style.display === 'none') {
+            choosePic.style.display = 'block'
+        }else{
+            choosePic.style.display = 'none'
+        }
+    }
+    function choosePic(ev) {
+        let imageFile = ev.target.files[0]
+        if (!imageFile) {
+            alert('Please select a file')
+            return
+        }
+        let reader = new FileReader()
+        reader.readAsDataURL(imageFile)
+        reader.addEventListener('load', (e) =>{
+            currentUser.profilePicture = e.target.result
+            localStorage.setItem('signedUpUsers', JSON.stringify(database))
+            document.getElementById('profile-pic').src = currentUser.profilePicture;
+        })
+    }
 
-    // foreach , find , map , filter , findIndex , some
+    function pickPicture(ev) {
+        let file = ev.target.files[0]
+        if (!file) {
+            alert('please select a file')
+            return
+        }
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.addEventListener('load', (e)=>{
+            ourpreviewimage.style.display = 'block'
+            ourpreviewimage.src = e.target.result
+        })
+    }
 
-    let arr = [1, 2, 3, 4, 5]
+   function postBlog() {
+         if (!forTitle.value.trim() || !forDescription.value.trim() || !ourpreviewimage.src) {
+            alert('please all fields are mandatory')
+        } else if (currentUsersblogsArr.find((blogObj) => blogObj.title === forTitle.value.trim())) {
+            alert('blog already exists')
+        } else {
+            ev.target.innerHTML = 'Sending....'
+            ev.target.disabled = true
 
-    // [2,3,4,5,6]
-    let newArr = arr.map((num) => {
-        return 1 + num
-    })
+            setTimeout(() => {
+                let blogObj = {
+                title: forTitle.value.trim(),
+                description: forDescription.value.trim(),
+                image: ourpreviewimage.src,
+                liked: false
+            }
 
-    console.log(newArr);
+            currentUsersblogsArr.push(blogObj)
+            localStorage.setItem('signedUpUsers', JSON.stringify(database))
+            alert('blog posted successfully')
+            displayBlogs()
+            ev.target.innerHTML = 'Send'
+            ev.target.disabled = false
 
-    let filteredEvenArr = arr.filter((num) => num % 2 == 0)
-    console.log(filteredEvenArr);
+            }, 3000);
+        }
+   }
+   
+   function displayBlogs() {
+        preview.innerHTML = '';
+        currentUsersblogsArr.forEach((blogObj, i) => {
+            preview.innerHTML += `
+            <div class="single-post">
+                <p>${blogObj.title}</p>
+                <p>${blogObj.description}</p>
+                <img src="${blogObj.image}" width="100px" height="100px"/>
 
-    let myArr = ['2', '3', '4', '5', '6']
-    let isEveryBodyAString = myArr.every((num) => {
-        console.log(num);
-        return typeof (num) == "string"
-    })
+                <button onclick="helpLike(${i})">${blogObj.liked ? 'liked' : 'not liked'}</button>
+                <button onclick="editPost(this)">Edit</button>
 
-    console.log(isEveryBodyAString);
+                <div class="edit-container" style="display: none">
+                    <input type="text" class="new-title" placeholder="Edit title">
+                    <input type="text" class="new-description" placeholder="Edit description">
+                    <button onclick="saveNewPost(${i})" class="saveNewPost">Save</button>
+                </div>
+
+                <button onclick="deletePost(${i})">Delete</button>
+            </div>
+            `;
+        });
+   }
+   displayBlogs()
+
+   function helpLike(index) {
+        currentUsersblogsArr[index].liked = !currentUsersblogsArr[index].liked
+        displayBlogs()
+        localStorage.setItem('signedUpUsers', JSON.stringify(database))
+    }
+    function deletePost(index) {
+        currentUsersblogsArr.splice(index, 1)
+        localStorage.setItem('signedUpUsers', JSON.stringify(database))
+        displayBlogs()
+
+    }
+     function editPicture() {
+        // currentUser.profilePicture = ''
+        let edit = document.getElementById('choosePic')
+        if(edit.style.display == 'none'){
+            edit.style.display = 'block'
+        }else{
+            edit.style.display = 'none'
+        }
+        // choosePic()
+    }
+    function editPost(button) {
+        const postDiv = button.closest('.single-post');
+  
+        const editBox = postDiv.querySelector('.edit-container');
+        editBox.style.display = 'block';
+    }
+
+    function saveNewPost(i) {
+        const postDiv = document.querySelectorAll('.single-post')[i]
+        const newTitle = postDiv.querySelector('.new-title').value.trim()
+        const newDesc = postDiv.querySelector('.new-description').value.trim()
+        const btn = postDiv.querySelector('.saveNewPost')
+
+        btn.innerHTML = 'Saving...'
+        btn.disabled = true
+
+        if (!newTitle || !newDesc) {
+            alert('Please fill in both fields')
+            btn.innerHTML = 'Save'
+            btn.disabled = false
+            return
+        }
+
+        setTimeout(() => {
+            currentUsersblogsArr[i].title = newTitle
+            currentUsersblogsArr[i].description = newDesc
+            localStorage.setItem('signedUpUsers', JSON.stringify(database))
+            displayBlogs()
+        }, 1000)
+    }
 
 
 

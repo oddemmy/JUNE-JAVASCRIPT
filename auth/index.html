@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fdf6ec; /* soft beige */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+
+    .form-container div {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #8d6e63; /* soft blue */
+      color: #fff;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #795548;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div>
+      <label for="username">Username</label>
+      <input type="text" id="username" />
+    </div>
+
+    <div>
+      <label for="email">Email</label>
+      <input type="text" id="email" />
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input type="text" id="password" />
+    </div>
+
+    <div>
+      <label for="confirmpassword">Confirm Password</label>
+      <input type="text" id="confirmpassword" />
+    </div>
+
+    <button onclick="signUp()">Sign Up</button>
+  </div>
+
+  
+</body>
+
+</html>
+<script>
+    let database = JSON.parse(localStorage.getItem('signedUpUsers')) || [];
+
+    let usernameInput = document.getElementById('username');
+    let emailInput = document.getElementById('email');
+    let passwordInput = document.getElementById('password');
+    let confirmPasswordInput = document.getElementById('confirmpassword');
+
+    function signUp() {
+      if (
+        !usernameInput.value.trim() || !emailInput.value.trim() || !passwordInput.value.trim() || !confirmPasswordInput.value.trim()
+      ) {
+        alert('All fields are mandatory');
+        return;
+      }
+
+      if (database.find((userObj) => userObj.email === emailInput.value.trim()
+        )
+      ) {
+        alert('User already exists');
+        return;
+      }
+
+      if (passwordInput.value.trim() !== confirmPasswordInput.value.trim()) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      let userObj = {
+        username: usernameInput.value.trim(),
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
+        confirmpassword: confirmPasswordInput.value.trim(),
+        profilePicture: 'default_pfp.png',
+        blogPosts: [],
+        liked: false
+      };
+
+      database.push(userObj);
+      localStorage.setItem('signedUpUsers', JSON.stringify(database));
+      window.location.href = 'login.html';
+    }
+</script>
+<!-- understand the if else statement again, and try to read on other higher order functions -->
+ <!-- if the condition is true and there is return there, it will immediately
+   come out of the function and wont run the other parts -->
+   <!-- use text area for editing -->

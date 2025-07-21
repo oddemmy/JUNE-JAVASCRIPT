@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRACTICE</title>
+</head>
+<body>
+    <input type="text" id="userInput" placeholder="Enter a number">
+    <p id="result"></p>
+    <button id="countBtn" onclick="count()">Count</button>
+</body>
+</html>
+
+<script>
+    const userInput = document.getElementById('userInput');
+    const result = document.getElementById('result');
+    const countBtn = document.getElementById('countBtn');
+    let timer; // declare globally to access in all functions
+
+    function count() {
+        let value = parseInt(userInput.value.trim());
+
+        if (value < 0) {
+            alert("Please enter a valid number ");
+            return;
+        }
+
+        countBtn.disabled = true;
+        countBtn.innerText = 'Counting...';
+
+        result.innerHTML = value;
+
+        timer = setInterval(() => {
+            value--;
+            result.innerHTML = value;
+
+            if (value <= 0) {
+                clearInterval(timer);
+                countBtn.disabled = false;
+                countBtn.innerText = 'Count';
+            }
+        }, 2000);
+    }
+</script>
+
+<!-- every button should have a loading state -->
+ <!-- you should be able to edit the blog -->
